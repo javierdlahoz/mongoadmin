@@ -25,5 +25,15 @@ if(!empty($_GET['delete'])){
     }
 }
 
+if(!empty($_POST['enableSharding'])){
+    $dbName = $_POST['dbName'];
+    $result = $mongoDB->enableSharding($dbName);
+    if($result['ok']==1){
+        header("Location: databases.php?success=Successfuly enabled sharding for ".$dbName);
+    }
+    else{
+        header("Location: databases.php?error=".$result['errmsg']);
+    }
+}
 ?>
 <?php include("layout/footer.php"); ?>

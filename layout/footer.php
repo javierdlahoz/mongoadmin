@@ -4,7 +4,7 @@
     	<hr>
 
     	<footer class="footer">
-    		MongoAdmin for Shardin v. 1.0.0
+    		MongoAdmin for Sharding v.1.0.0
 		</footer>
         </div>
     </body>

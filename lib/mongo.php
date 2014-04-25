@@ -16,7 +16,6 @@
 			$this->port = $params->{'port'};
 			$this->db = $params->{'db'};
 			$this->host = $params->{'host'};
-            //$this->con = new Mongo("mongodb://user:user@{$this->host}:{$this->$port}");
             $this->con = new Mongo("mongodb://$this->username:$this->password@$this->host:$this->port");
 		}
 
@@ -47,4 +46,22 @@
             return $results;
         }
 
+        function getDatabases(){
+            $db = $this->con->selectDB('admin');
+            $results = $db->command(array("listDatabases" => 1 ));
+            $dbArray = array();
+            foreach($results['databases'] as $database){
+                if(($database['name']!="admin")&&($database['name']!="config")){
+                    array_push($dbArray, $database);
+                }
+            }
+            return $dbArray;
+        }
+
+        function enableSharding($dbName){
+            $db = $this->con->selectDB('admin');
+            $results = $db->command(array("enableSharding" => $dbName ));
+            print_r($results);
+            return $results;
+        }
 	}

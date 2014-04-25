@@ -6,7 +6,7 @@
 	<head>
 		<title>MongoAdmin for Sharding</title>
 		<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
-		<nav class="navbar navbar-default" role="navigation">
+		<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
 		  <div class="container-fluid">
 		    <!-- Brand and toggle get grouped for better mobile display -->
 		    <div class="navbar-header">
@@ -44,5 +44,12 @@
 		  </div><!-- /.container-fluid -->
 		</nav>
 	</head>
+    <div style="height: 55px"></div>
 	<body>
     <div class="container">
+        <?php if(!empty($_GET['error'])){ ?>
+            <div class="alert alert-block alert-danger">Error: <?php echo $_GET['error']; ?></div>
+        <?php } ?>
+        <?php if(!empty($_GET['success'])){ ?>
+            <div class="alert alert-block alert-success"><?php echo $_GET['success']; ?></div>
+        <?php } ?>
