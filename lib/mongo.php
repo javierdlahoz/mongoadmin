@@ -47,11 +47,13 @@
         }
 
         function getDatabases(){
-            $db = $this->con->selectDB('admin');
-            $results = $db->command(array("listDatabases" => 1 ));
+            $db = $this->con->selectDB('config');
+            $databases = new MongoCollection($db, 'databases');
+            $results = $databases->find();
             $dbArray = array();
-            foreach($results['databases'] as $database){
-                if(($database['name']!="admin")&&($database['name']!="config")){
+            foreach($results as $database){
+                if(($database['_id']!="admin")&&($database['_id']!="config")){
+                    $database['name'] = $database['_id'];
                     array_push($dbArray, $database);
                 }
             }
@@ -61,7 +63,27 @@
         function enableSharding($dbName){
             $db = $this->con->selectDB('admin');
             $results = $db->command(array("enableSharding" => $dbName ));
-            print_r($results);
             return $results;
+        }
+
+        function isMongos(){
+            $db = $this->con->selectDB('admin');
+            $results = $db->command(array("isdbgrid" => 1 ));
+            if($results['isdbgrid']==1)
+                return true;
+            else
+                return false;
+        }
+
+        function getCollections($dbName){
+            $db = $this->getDb($dbName);
+            $collections = $db->getCollectionNames();
+            $collectionsArray = array();
+            foreach($collections as $collection){
+                if($collection != "system.indexes"){
+                    array_push($collectionsArray, $collection);
+                }
+            }
+            return $collectionsArray;
         }
 	}

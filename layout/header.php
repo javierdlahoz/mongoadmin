@@ -47,6 +47,12 @@
     <div style="height: 55px"></div>
 	<body>
     <div class="container">
+    <?php if(!$mongoDB->isMongos()): ?>
+        <div class="alert alert-block alert-danger">This is not a MONGOS instance</div>
+    <?php
+        die();
+        endif;
+    ?>
         <?php if(!empty($_GET['error'])){ ?>
             <div class="alert alert-block alert-danger">Error: <?php echo $_GET['error']; ?></div>
         <?php } ?>

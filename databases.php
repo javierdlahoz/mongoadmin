@@ -19,18 +19,22 @@
     <table class="table table-striped">
         <tr>
             <th>Database</th>
-            <th>Status</th>
+            <th>Partitioned</th>
+            <th>Primary</th>
         </tr>
         <?php foreach($databases as $database): ?>
         <tr>
             <td><a href="collections.php?db=<?php echo $database['name']; ?>"><?php echo $database['name']; ?></a></td>
             <td>
             <?php
-                if(!empty($database['shards']))
-                    echo "active";
+                if($database['partitioned'])
+                    echo "true";
                 else
-                    echo "inactive";
+                    echo "false";
             ?>
+            </td>
+            <td>
+                <?php echo $database['primary']; ?>
             </td>
         </tr>
         <?php endforeach; ?>
