@@ -1,3 +1,7 @@
+<?php include("lib/mongo.php");
+    $mongoDB = new MongoHelper();
+    $adminDB = $mongoDB->getDb("admin");
+?>
 <html>
 	<head>
 		<title>MongoAdmin for Sharding</title>
@@ -41,3 +45,4 @@
 		</nav>
 	</head>
 	<body>
+    <div class="container">
