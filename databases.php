@@ -14,6 +14,13 @@
         </div>
         <button type="submit" class="btn btn-success" name="enableSharding" value="ok">Enable</button>
     </form>
+    <form action="sharding.php" method="post" role="form" class="form-inline">
+        <div class="form-group">
+            <label for="dbName">Create a database:</label>
+            <input class="form-control" name="dbName"/>
+        </div>
+        <button type="submit" class="btn btn-success" name="createDatabase" value="ok">Create</button>
+    </form>
 <hr>
 <h4>List of databases</h4>
     <table class="table table-striped">
@@ -21,6 +28,7 @@
             <th>Database</th>
             <th>Partitioned</th>
             <th>Primary</th>
+            <th>Drop</th>
         </tr>
         <?php foreach($databases as $database): ?>
         <tr>
@@ -36,6 +44,7 @@
             <td>
                 <?php echo $database['primary']; ?>
             </td>
+            <td><a onclick="return confirm('Are you sure?');" href="sharding.php?deleteDB=<?php echo $database['name']; ?>">x</a></td>
         </tr>
         <?php endforeach; ?>
     </table>

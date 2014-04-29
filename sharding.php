@@ -35,5 +35,27 @@ if(!empty($_POST['enableSharding'])){
         header("Location: databases.php?error=".$result['errmsg']);
     }
 }
+
+if(!empty($_POST['createDatabase'])){
+    $dbName = $_POST['dbName'];
+    $result = $mongoDB->createDatabase($dbName);
+    if($result){
+        header("Location: databases.php?success=Successfuly created: ".$dbName);
+    }
+    else{
+        header("Location: databases.php?error=Can't create the database");
+    }
+}
+
+if(!empty($_GET['deleteDB'])){
+    $dbName = $_GET['deleteDB'];
+    $result = $mongoDB->dropDatabase($dbName);
+    if($result){
+        header("Location: databases.php?success=Successfuly dropped: ".$dbName);
+    }
+    else{
+        header("Location: databases.php?error=Can't drop the database");
+    }
+}
 ?>
 <?php include("layout/footer.php"); ?>

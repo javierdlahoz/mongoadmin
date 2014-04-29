@@ -3,5 +3,5 @@
 	"password": "root",
 	"port": 27020,
 	"db": "admin",
-	"host": "10.0.1.62"
+	"host": "127.0.0.1"
 }

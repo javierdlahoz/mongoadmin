@@ -7,6 +7,7 @@
 		private $db;
 		private $host;
         private $con;
+        private $verion = "1.0.0";
 
 		function __construct(){
 			$params = file_get_contents("lib/connect.json");
@@ -85,5 +86,62 @@
                 }
             }
             return $collectionsArray;
+        }
+
+        function createDatabase($dbName){
+            try{
+                $db = $this->getDb($dbName);
+                $collection = $db->createCollection("mongoadmin");
+                $collection->insert(array("version"=>$this->version));
+                return true;
+            }
+            catch(Exception $ex)
+            {
+                echo $ex;
+                die();
+                return false;
+            }
+        }
+
+        function dropDatabase($dbName){            
+            $db = $this->getDb($dbName);
+            $result = $db->drop();
+            if($result['ok']==1)
+                return true;
+            else
+                return false;
+        }
+
+        function getStats($dbName){
+            $db = $this->getDb($dbName);
+            $result = $db->command(array('dbStats' => 1));
+            return $result['raw'];
+        }
+
+        function ensureIndex($dbName, $collection, $index){
+            $db = $this->getDb($dbName);
+            $collection = $db->selectCollection($collection);
+            $result = $collection->ensureIndex(array($index => "hashed"));
+            return $result;
+        }
+
+        function dropCollection($dbName, $collection){
+            $db = $this->getDb($dbName);
+            $collection = $db->selectCollection($collection);
+            try{
+                $collection->drop();
+                return true;
+            }
+            catch(Exception $ex){
+                echo $ex;
+                die();
+                return false;
+            }
+        }
+
+        function shardCollection($dbName, $collectionName, $index){
+            $db = $this->con->selectDB('admin');
+            $result = $db->command(array('shardCollection'=> $dbName.'.'.$collectionName, 'key' => array($index => 'hashed')));
+            return $result;
         }
 	}
