@@ -1,4 +1,3 @@
-<?php echo phpinfo(); ?>
 <?php include("layout/header.php"); ?>
 <h1>Welcome to MongoAdmin for sharding</h1>
 <hr>
