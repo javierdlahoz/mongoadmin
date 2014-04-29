@@ -1,4 +1,6 @@
-<?php include("lib/mongo.php");
+<?php 
+	
+	include("lib/mongo.php");
     $mongoDB = new MongoHelper();
     $adminDB = $mongoDB->getDb("admin");
 ?>
@@ -50,7 +52,7 @@
     <?php if(!$mongoDB->isMongos()): ?>
         <div class="alert alert-block alert-danger">This is not a MONGOS instance</div>
     <?php
-        die();
+    	die();
         endif;
     ?>
         <?php if(!empty($_GET['error'])){ ?>
