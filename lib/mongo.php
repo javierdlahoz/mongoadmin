@@ -10,13 +10,20 @@
 
 		function __construct(){
 			$params = file_get_contents("lib/connect.json");
-			$params = json_decode($params);
-			$this->username = $params->{'username'};
+            $params = json_decode($params);
+
+            $this->username = $params->{'username'};
 			$this->password = $params->{'password'};			
 			$this->port = $params->{'port'};
 			$this->db = $params->{'db'};
 			$this->host = $params->{'host'};
-            $this->con = new Mongo("mongodb://$this->username:$this->password@$this->host:$this->port");
+            try{
+                $this->con = new Mongo("mongodb://$this->username:$this->password@$this->host:$this->port");
+            }
+            catch(Exception $ex){
+                echo "Error: ".$ex;
+                die();
+            }
 		}
 
         function getDb($db){
