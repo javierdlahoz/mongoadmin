@@ -4,9 +4,47 @@
         $collections  = $mongoDB->getCollections($db);
         $stats = $mongoDB->getStats($db);
 ?>
-<h1>Collections of <?php echo $db; ?></h1>
+<h3>Collections of <?php echo $db; ?></h3>
+    <hr>
+    <a class="btn btn-info rounded_btn" href="databases.php?db=<?php echo $db; ?>">
+    Back to <?php echo $db; ?>
+    </a>
+    <hr>
+    <form action="functions.php" method="post" role="form" class="form-inline">
+        <div class="form-group">
+            <label for="collectionName">Collection: </label>
+            <select class="form-control" name="collectionName">
+                <?php foreach($collections as $collection): ?>
+                <option value="<?php echo $collection; ?>"><?php echo $collection; ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+            <div class="form-group">
+                <label for="indexName">Index: </label>
+                <input type="text" class="form-control" name="indexName" placeholder="_id">
+                <input type="hidden" name="dbName" value="<?php echo $db; ?>">
+            </div>
+        <button type="submit" class="btn btn-success" name="createIndex" value="ok">Create Index</button>
+        <button type="submit" class="btn btn-success" name="shardCollection" value="ok">Enable sharding</button>
+    </form>
 <hr>
-    <h4>Database stats</h4>
+<h4>Collection status</h4>
+    <table class="table table-striped">
+        <tr>
+            <th>Collection</th>
+            <th>Delete</th>
+        </tr>
+        <?php foreach($collections as $collection): ?>
+        <tr>
+            <td><a href="documents.php?collection=<?php echo $collection; ?>&db=<?php echo $db; ?>">
+            <?php echo $collection; ?></a></td>
+            <td><a onclick="return confirm('Are you sure?')" 
+            href="functions.php?dropCollection=<?php echo $collection; ?>&db=<?php echo $db; ?>">x</a></td>
+        </tr>
+        <?php endforeach; ?>
+    </table>
+<hr>
+<h4>Database stats</h4>
     <table class="table table-striped">
     <tr>
         <th>Host</th>
@@ -22,9 +60,10 @@
     </tr>
     <?php 
         $i=0;
-        foreach ($stats as $stat): ?>
+        $host = array_keys($stats);
+        foreach($stats as $stat){ ?>
         <tr>
-            <td><?php echo array_keys($stats)[$i]; ?></td>
+            <td><?php echo $host[$i]; ?></td>
             <td><?php echo $stat['collections']; ?></td>
             <td><?php echo $stat['objects']; ?></td>
             <td><?php echo number_format($stat['avgObjSize']/1024, 2); ?></td>
@@ -37,56 +76,6 @@
         </tr>
     <?php 
         $i++;
-        endforeach; ?>
-    </table>
-<hr>
-    <h4>Create an index</h4>
-    <form action="functions.php" method="post" role="form" class="form-inline">
-        <div class="form-group">
-            <label for="collectionName">Collection: </label>
-            <select class="form-control" name="collectionName">
-                <?php foreach($collections as $collection): ?>
-                <option value="<?php echo $collection; ?>"><?php echo $collection; ?></option>
-                <?php endforeach; ?>
-            </select>
-        </div>
-            <div class="form-group">
-                <label for="indexName">Index: </label>
-                <input type="text" class="form-control" name="indexName" placeholder="_id">
-                <input type="hidden" name="dbName" value="<?php echo $db; ?>">
-            </div>
-        <button type="submit" class="btn btn-success" name="createIndex" value="ok">Create</button>
-    </form>
-<hr>
-<h4>Manage sharding for collections</h4>
-    <form action="functions.php" method="post" role="form" class="form-inline">
-        <div class="form-group">
-            <label for="collectionName">Collection: </label>
-            <select class="form-control" id="collectionName" name="collectionName">
-                <?php foreach($collections as $collection): ?>
-                    <option value="<?php echo $collection; ?>"><?php echo $collection; ?></option>
-                <?php endforeach; ?>
-            </select>
-        </div>
-        <div class="form-group">
-                <label for="indexName">Index: </label>
-                <input type="text" class="form-control" name="indexName" placeholder="_id">
-                <input type="hidden" name="dbName" value="<?php echo $db; ?>">
-        </div>
-        <button type="submit" class="btn btn-success" name="shardCollection" value="ok">Enable/Disable</button>
-    </form>
-<hr>
-<h4>Collection status</h4>
-    <table class="table table-striped">
-        <tr>
-            <th>Collection</th>
-            <th>Delete</th>
-        </tr>
-        <?php foreach($collections as $collection): ?>
-        <tr>
-            <td><?php echo $collection; ?></td>
-            <td><a onclick="return confirm('Are you sure?')" href="functions.php?dropCollection=<?php echo $collection; ?>&db=<?php echo $db; ?>">x</a></td>
-        </tr>
-        <?php endforeach; ?>
+        } ?>
     </table>
 <?php include("layout/footer.php"); ?>

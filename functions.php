@@ -43,5 +43,21 @@ if(!empty($_POST['shardCollection'])){
         header("Location: collections.php?error=".$result["errmsg"]."&db=".$dbName);
     }
 }
+
+if(!empty($_POST['createDocument'])){
+    $dbName = $_POST['dbName'];
+    $collection = $_POST['collectionName'];
+    $document = $_POST['document'];
+    $result = $mongoDB->createDocument($dbName, $collection, $document);
+
+    if($result){       
+        header("Location: 
+        documents.php?success=The document was succesfully created"."&db=".$dbName."&collection=".$collection);
+    }
+    else{
+        header("Location: 
+        collections.php?error=There was an error while creating the document&db=".$dbName."&collection=".$collection);
+    }
+}
 ?>
 <?php include("layout/footer.php"); ?>

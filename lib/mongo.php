@@ -151,4 +151,25 @@
             $result = $db->command(array('shardCollection'=> $dbName.'.'.$collectionName, 'key' => array($index => 'hashed')));
             return $result;
         }
+
+        function createDocument($dbName, $collectionName, $document){
+            $db = $this->getDb($dbName);
+            $collection = $db->selectCollection($collectionName);
+            try{
+                $collection->insert(json_decode($document));
+                return true;
+            }
+            catch(Exception $ex)
+            {
+                return false;
+            }
+
+        }
+
+        function findDocument($dbName, $collectionName, $query){
+            $db = $this->getDb($dbName);
+            $collection = $db->selectCollection($collectionName);
+            $result = $collection->find(json_decode($query))->limit(10);
+            return $result;
+        }
 	}
