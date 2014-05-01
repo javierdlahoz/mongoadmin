@@ -28,7 +28,7 @@
         <button type="submit" class="btn btn-success" name="shardCollection" value="ok">Enable sharding</button>
     </form>
 <hr>
-<h4>Collection status</h4>
+<h4>Collections</h4>
     <table class="table table-striped">
         <tr>
             <th>Collection</th>

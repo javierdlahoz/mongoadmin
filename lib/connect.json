@@ -1,7 +1,1 @@
-{
-	"username": "root",
-	"password": "root",
-	"port": 27020,
-	"db": "admin",
-	"host": "127.0.0.1"
-}
+{"username":"root","password":"root","port":"27020","db":"admin","host":"127.0.0.1"}

@@ -56,8 +56,44 @@ if(!empty($_POST['createDocument'])){
     }
     else{
         header("Location: 
-        collections.php?error=There was an error while creating the document&db=".$dbName."&collection=".$collection);
+        documents.php?error=There was an error while creating the document&db=".$dbName."&collection=".$collection);
     }
 }
+
+if(!empty($_GET['deleteDocument'])){
+    $dbName = $_GET['db'];
+    $collection = $_GET['collection'];
+    $document = $_GET['deleteDocument'];
+    $result = $mongoDB->deleteDocument($dbName, $collection, $document);
+
+    if($result){       
+        header("Location: 
+        documents.php?success=The document was succesfully deleted"."&db=".$dbName."&collection=".$collection);
+    }
+    else{
+        header("Location: 
+        documents.php?error=There was an error while deleting the document&db=".$dbName."&collection=".$collection);
+    }
+}
+
+if(!empty($_POST['changeSettings'])){
+    $data = array(
+            "host" => $_POST['host'],
+            "port" => $_POST['port'],
+            "username" => $_POST['username'],
+            "password" => $_POST['password']
+        );
+
+    $result = $mongoDB->setConnectionData($data);
+    if($result){       
+        header("Location: 
+        settings.php?success=The settings were succesfully updated");
+    }
+    else{
+        header("Location: 
+        settings.php?error=We couldn't connect to a Mongos instance with this data");
+    }
+}
+
 ?>
 <?php include("layout/footer.php"); ?>

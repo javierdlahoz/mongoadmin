@@ -45,8 +45,14 @@ if(!empty($_POST['findDocument'])){
     ?>
     <tr>
         <td><?php echo json_encode($document); ?></td>
+        <td width="3%">
+        <a onclick="return confirm('Are you sure?')" 
+            href="functions.php?deleteDocument=<?php 
+            echo $document['_id']; ?>&db=<?php 
+            echo $db; ?>&collection=<?php echo $collection; ?>">x</a></td>
     </tr>
     <?php } ?>
 </table>   
 <?php } ?>
+
 <?php include("layout/footer.php"); ?>

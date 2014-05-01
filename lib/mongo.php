@@ -172,4 +172,55 @@
             $result = $collection->find(json_decode($query))->limit(10);
             return $result;
         }
+
+        function deleteDocument($dbName, $collectionName, $documentId){
+            $db = $this->getDb($dbName);
+            $collection = $db->selectCollection($collectionName);         
+            $result = $collection->remove(array('_id' => new MongoId($documentId)));            
+            return $result;
+        }
+
+        function getConnectionData(){
+            $dataArray = array(
+                    "host" => $this->host,
+                    "username" => $this->username,
+                    "password" => $this->password,
+                    "port" => $this->port
+                );
+            return $dataArray; 
+        }
+
+        function setConnectionData($data){
+            $tmp = $this->getConnectionData();
+            $this->host = $data['host'];
+            $this->port = $data['port'];
+            $this->username = $data['username'];
+            $this->password = $data['password'];
+
+            try{
+                $this->con = 
+                    new Mongo("mongodb://$this->username:$this->password@$this->host:$this->port");
+                
+                if($this->isMongos()){
+                    $jsonArray = array(
+                                "username"  => $this->username,
+                                "password"  => $this->password,
+                                "port"  => $this->port,
+                                "db"    => "admin",
+                                "host"  => $this->host
+                                );
+                    $json = json_encode($jsonArray);
+                    $fp = fopen("lib/connect.json", 'w');
+                    fwrite($fp, $json);
+                    fclose($fp);   
+                    return true;
+                }
+                else
+                    return false;
+            }
+            catch(Exception $ex){
+                $this->setConnectionData($tmp);
+                return false;
+            }
+        }
 	}
